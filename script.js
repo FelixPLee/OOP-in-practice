@@ -23,7 +23,7 @@ class Workout {
 
     _setDescription() {
         const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-    this.description = `${this.type[0].ToUppercase()}${this.type.slice(1)} on ${months[this.date.getMonth()]} ${this.date.getDate}`
+    this.description = `${this.type[0].toUpperCase()}${this.type.slice(1)} on ${months[this.date.getMonth()]} ${this.date.getDate()}`
     }
 }
 class Running extends Workout {
@@ -100,6 +100,14 @@ class App {
         inputDistance.focus()
     }
 
+    _hideForm() {
+        //empty imputs
+        inputDistance.value = inputDuration.value = inputCadence.value = inputElevation.value = ''
+        form.style.diplay = 'none'
+        form.classList.add('hidden')
+        setTimeout(() => (form.style.display = 'grid'), 1000)
+    }
+
     _toggleElevationField() {
         inputElevation.closest('.form__row').classList.toggle('form__row--hidden')
         inputCadence.closest('.form__row').classList.toggle('form__row--hidden')
@@ -147,12 +155,14 @@ class App {
     //add new obj to workouts array
     this.#workouts.push(workout)
     //Display marker
+    this._renderWorkout(workout)
     this.renderWorkoutMarker(workout)
+    this._hideForm()
 
     //Clear input fields
     inputDistance.value = inputDuration.value = inputCadence.value = inputElevation.value = ''
-
     }
+
     renderWorkoutMarker(workout) {
         L.marker(workout.coords)
             .addTo(this.#map)
@@ -168,13 +178,14 @@ class App {
         .setPopupContent(`${workout.type}`)
         .openPopup();
     }
+
     _renderWorkout(workout) {
 
-        const html = `
-        <!-- <li class="workout workout--${workout.name}" data-id="${workout.id}">
+        let html = `
+        <li class="workout workout--${workout.name}" data-id="${workout.id}">
           <h2 class="workout__title">${workout.description}</h2>
           <div class="workout__details">
-            <span class="workout__icon">${workout.name === 'running' ? '🏃‍♂️' : '🚴‍♀️'}</span>
+            <span class="workout__icon">${workout.name === 'running' ? '🚴‍♀️' : '🏃‍♂️'}</span>
             <span class="workout__value">${workout.distance}</span>
             <span class="workout__unit">km</span>
           </div>
@@ -184,7 +195,7 @@ class App {
             <span class="workout__unit">min</span>
           </div>`
 
-        if (workout.type === 'runnig')
+        if (workout.type === 'running')
             html += `
             <div class="workout__details">
             <span class="workout__icon">⚡️</span>
@@ -212,6 +223,7 @@ class App {
           </div>
         </li>
         `
+        form.insertAdjacentHTML('afterend', html)
     }
 
 }
