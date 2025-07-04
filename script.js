@@ -162,6 +162,10 @@ class App {
     this.renderWorkoutMarker(workout)
     this._hideForm()
 
+    //Local storage
+
+    this._setLocalStorage()
+
     //Clear input fields
     inputDistance.value = inputDuration.value = inputCadence.value = inputElevation.value = ''
     }
@@ -241,6 +245,11 @@ class App {
                 {duration : 1}
             }
         )
+    }
+
+    _setLocalStorage() {
+        localStorage.setItem('workouts', JSON.stringify(this.#workouts));
+        
     }
 
 }
