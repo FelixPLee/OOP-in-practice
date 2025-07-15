@@ -102,7 +102,7 @@ class App {
         this.#map.on('click', this._showForm.bind(this))
 
         this.#workouts.forEach(work =>
-            this.renderWorkoutMarker(work))
+            this._renderWorkoutMarker(work))
     }
 
     _showForm(mapE) {
@@ -168,7 +168,7 @@ class App {
 
     // display and hide things
     this._renderWorkout(workout)
-    this.renderWorkoutMarker(workout)
+    this._renderWorkoutMarker(workout)
     this._hideForm()
 
     //Local storage
@@ -179,7 +179,7 @@ class App {
     inputDistance.value = inputDuration.value = inputCadence.value = inputElevation.value = ''
     }
 
-    renderWorkoutMarker(workout) {
+    _renderWorkoutMarker(workout) {
         L.marker(workout.coords)
             .addTo(this.#map)
             .bindPopup(
@@ -268,6 +268,10 @@ class App {
         this.#workouts = data
         this.#workouts.forEach(work => 
             this._renderWorkout(work))
+    }
+    reset() {
+        localStorage.removeItem('workouts')
+        location.reload()
     }
 
 }
